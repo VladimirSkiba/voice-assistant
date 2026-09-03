@@ -1,18 +1,15 @@
 {
     "name": "My Voice Assistan",
-    
-    
     "build": {
         "dockerfile": "Dockerfile",
         "context": ".." // Контекст сборки (корень проекта)
     },
-    
     "runArgs": [
-        "--network=host",
-        "--device /dev/snd",
         "--group-add audio"
     ],
-
+    "mounts": [
+        "source=/dev/snd,target=/dev/snd,type=bind"
+    ],
     "customizations": {
         "vscode": {
             // Какие расширения установить автоматически
@@ -28,12 +25,11 @@
             }
         }
     },
-
     // Проброс портов (чтобы открыть localhost:8000 на хосте)
-    "forwardPorts": [8000],
-
+    "forwardPorts": [
+        8000
+    ],
     // Установки зависимостей для проекта.
-    "postCreateCommand": "pip install -r requirements.txt" ,
-
+    "postCreateCommand": "pip install -r requirements.txt",
     "remoteUser": "vscode"
 }
