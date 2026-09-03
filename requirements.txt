@@ -1,4 +1,5 @@
-sounddevice 
+sounddevice
 soundfile
-openai 
+openai
 numpy
+playsound3

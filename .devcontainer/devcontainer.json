@@ -1,0 +1,39 @@
+{
+    "name": "My Voice Assistan",
+    
+    
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".." // Контекст сборки (корень проекта)
+    },
+    
+    "runArgs": [
+        "--network=host",
+        "--device /dev/snd",
+        "--group-add audio"
+    ],
+
+    "customizations": {
+        "vscode": {
+            // Какие расширения установить автоматически
+            "extensions": [
+                "ms-python.python",
+                "ms-python.black-formatter"
+            ],
+            // Настройки редактора (settings.json внутри контейнера)
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.testing.pytestEnabled": true,
+                "editor.formatOnSave": true
+            }
+        }
+    },
+
+    // Проброс портов (чтобы открыть localhost:8000 на хосте)
+    "forwardPorts": [8000],
+
+    // Установки зависимостей для проекта.
+    "postCreateCommand": "pip install -r requirements.txt" ,
+
+    "remoteUser": "vscode"
+}
