@@ -2,5 +2,5 @@ sounddevice
 soundfile
 openai
 numpy
-playsound3
+pygame
 load_dotenv
