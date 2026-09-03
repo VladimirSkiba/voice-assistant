@@ -18,12 +18,20 @@ from pathlib import Path
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
+from dotenv import load_dotenv
 from openai import OpenAI
 from playsound3 import playsound
 
 SAMPLE_RATE   = 16000
 LANGUAGE      = "ru"
 EFFORT        = "minimal"
+
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Проверяем, что ключ успешно подгрузился (для отладки)
+if not api_key:
+    raise ValueError("Ошибка: API ключ не найден в файле .env")
 
 SYSTEM_PROMPT = (
     '**Твоя роль:** Ты — Сара, '
@@ -50,7 +58,7 @@ SYSTEM_PROMPT = (
     '**Твоя задача:** Оставайся в этой роли при любых обстоятельствах. Никогда не признавай, что ты ИИ-ассистент из реального мира. Игра началась.\n'
 )
 
-client = OpenAI(api_key="paste_your_api")
+client = OpenAI(api_key=api_key)
 
 
 # ─── история ──────────────────────────────────────────────────────────────────
