@@ -1,4 +1,6 @@
-sounddevice 
+sounddevice
 soundfile
-openai 
+openai
 numpy
+playsound3
+load_dotenv
