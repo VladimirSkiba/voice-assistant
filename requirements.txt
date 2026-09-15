@@ -4,4 +4,4 @@ openai
 numpy
 pygame
 load_dotenv
-soprano-tts
+soprano-ttsg
