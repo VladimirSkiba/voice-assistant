@@ -20,7 +20,7 @@ import sounddevice as sd
 import soundfile as sf
 from dotenv import load_dotenv
 from openai import OpenAI
-from playsound3 import playsound
+import pygame
 
 SAMPLE_RATE   = 16000
 LANGUAGE      = "ru"
@@ -153,7 +153,16 @@ def speak(text: str):
             instructions="максимально ровный, женский роботизированный голос",
         )
         response.stream_to_file(tmp.name)
-        playsound(tmp.name)
+        
+        # Воспроизведение через pygame
+        pygame.mixer.init()
+        pygame.mixer.music.load(tmp.name)
+        pygame.mixer.music.play()
+        
+        # Ждем, пока трек не закончится
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
+            
     os.unlink(tmp.name)
 
 

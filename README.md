@@ -12,7 +12,12 @@
     ```
     pip install -r requirements.txt
     ```
-*   ## 4 Запускаем помошника 
+    ## 4 Создаём файл .env 
+    который внутри должен содержать ваш API
+    ```
+    OPENAI_API_KEY="paste_your_api"
+    ```
+*   ## 5 Запускаем помошника 
     ```
     python src/main.py
     ```
