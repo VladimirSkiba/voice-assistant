@@ -106,7 +106,7 @@ class Vosk22Transcriber(Transcriber):
 
 
 class VoskTranscriber(Transcriber):
-    def __init__(self, model_path: str = "models/vosk-model-small-ru-0.22"):
+    def __init__(self, model_path: str = "models/vosk-model-small-ru-0.2"):
         print("[INFO] Загрузка модели Vosk в память...")
         SetLogLevel(-1)
         
@@ -151,9 +151,7 @@ class VoskTranscriber(Transcriber):
     def get_name(self) -> str:
         return "Vosk (локальная модель)"
 
-
-clasudo apt update
-sudo apt install libportaudio2ss TranscriberFactory:
+class TranscriberFactory:
     """Фабрика для создания транскрайберов."""
 
     @staticmethod
@@ -177,9 +175,11 @@ def select_transcriber(client) -> Transcriber:
     print("\n=== Выбор движка распознавания речи ===")
     print("1. Whisper")
     print("2. Vosk22 (маленькая локальная модель)")
+    print("3. Vosk42 (маленькая локальная модель)")
+
 
     while True:
-        choice = input("\nВведите номер (1-2): ").strip()
+        choice = input("\nВведите номер (1-3): ").strip()
 
         if choice == "1":
             return TranscriberFactory.create(
@@ -202,6 +202,23 @@ def select_transcriber(client) -> Transcriber:
 
             return TranscriberFactory.create(
                 "vosk22",
+                model_path=model_path
+            )
+
+        if choice == "3":
+            model_path = input(
+                "Путь к папке с моделью Vosk [models/vosk-model-small-ru-0.42]: "
+            ).strip()
+
+            if not model_path:
+                model_path = "models/vosk-model-small-ru-0.42"
+
+            if not os.path.exists(model_path):
+                print(f"[!] Папка не найдена: {model_path}")
+                continue
+
+            return TranscriberFactory.create(
+                "vosk42",
                 model_path=model_path
             )
 

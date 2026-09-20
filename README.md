@@ -17,12 +17,24 @@
     ```
     pip install -r requirements.txt
     ```
-    ## 4 Создаём файл .env 
+*   ## 4 Создаём папку `models` и скачиваем модели Vosk
+    ```
+    mkdir -p models
+    cd models
+    wget https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip
+    wget https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip
+    unzip vosk-model-small-ru-0.22.zip
+    unzip vosk-model-ru-0.42.zip
+    rm vosk-model-small-ru-0.22.zip vosk-model-ru-0.42.zip
+    cd ..
+    ```
+    Список моделей: [alphacephei.com/vosk/models](https://alphacephei.com/vosk/models)
+    ## 5 Создаём файл .env
     который внутри должен содержать ваш API
     ```
     OPENAI_API_KEY="paste_your_api"
     ```
-*   ## 5 Запускаем помошника 
+*   ## 6 Запускаем помошника
     ```
     python src/main.py
     ```
