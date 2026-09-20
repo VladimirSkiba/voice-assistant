@@ -4,6 +4,11 @@
     ```
     python -m venv .venv
     ```
+* ## 1.1 Устанавливаем системную библиотеку для записи аудио
+    ```
+    sudo apt update
+    sudo apt install libportaudio2
+    ```
 *   ## 2 Активируем виртуальное окружение 
     ```
     source .venv/bin/activate
