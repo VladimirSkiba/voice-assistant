@@ -4,3 +4,4 @@ openai
 numpy
 pygame
 load_dotenv
+vosk
