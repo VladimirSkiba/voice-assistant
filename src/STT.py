@@ -165,61 +165,48 @@ class TranscriberFactory:
             return Vosk22Transcriber(
                 model_path=kwargs.get("model_path", "models/vosk-model-small-ru-0.22")
             )
+        elif engine_type == "vosk42":
+            return VoskTranscriber(
+                model_path=kwargs.get("model_path", "models/vosk-model-ru-0.42")
+            )
         else:
             raise ValueError(f"Неизвестный тип движка: {engine_type}")
 
 
-def select_transcriber(client) -> Transcriber:
-    """Интерактивный выбор движка распознавания речи."""
+def select_transcribers(client) -> list[tuple[str, Transcriber]]:
+    """Выбрать один или несколько движков с фиксированными путями моделей."""
 
     print("\n=== Выбор движка распознавания речи ===")
     print("1. Whisper")
     print("2. Vosk22 (маленькая локальная модель)")
-    print("3. Vosk42 (маленькая локальная модель)")
+    print("3. Vosk42 (большая локальная модель)")
+    print("4. Whisper + Vosk22")
+    print("5. Все три модели")
 
+    engines = {
+        "1": ["whisper"],
+        "2": ["vosk22"],
+        "3": ["vosk42"],
+        "4": ["whisper", "vosk22"],
+        "5": ["whisper", "vosk22", "vosk42"],
+    }
 
     while True:
-        choice = input("\nВведите номер (1-3): ").strip()
+        choice = input("\nВведите номер (1-5): ").strip()
 
-        if choice == "1":
-            return TranscriberFactory.create(
-                "whisper",
-                client=client,
-                language="ru"
-            )
+        if choice in engines:
+            selected = []
+            for engine_type in engines[choice]:
+                kwargs = {"client": client, "language": "ru"}
+                if engine_type == "vosk22":
+                    kwargs["model_path"] = "models/vosk-model-small-ru-0.22"
+                elif engine_type == "vosk42":
+                    kwargs["model_path"] = "models/vosk-model-ru-0.42"
 
-        if choice == "2":
-            model_path = input(
-                "Путь к папке с моделью Vosk [models/vosk-model-small-ru-0.22]: "
-            ).strip()
-
-            if not model_path:
-                model_path = "models/vosk-model-small-ru-0.22"
-
-            if not os.path.exists(model_path):
-                print(f"[!] Папка не найдена: {model_path}")
-                continue
-
-            return TranscriberFactory.create(
-                "vosk22",
-                model_path=model_path
-            )
-
-        if choice == "3":
-            model_path = input(
-                "Путь к папке с моделью Vosk [models/vosk-model-small-ru-0.42]: "
-            ).strip()
-
-            if not model_path:
-                model_path = "models/vosk-model-small-ru-0.42"
-
-            if not os.path.exists(model_path):
-                print(f"[!] Папка не найдена: {model_path}")
-                continue
-
-            return TranscriberFactory.create(
-                "vosk42",
-                model_path=model_path
-            )
+                selected.append((
+                    engine_type,
+                    TranscriberFactory.create(engine_type, **kwargs),
+                ))
+            return selected
 
         print("[!] Неверный выбор, попробуйте снова")
